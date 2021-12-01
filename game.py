@@ -64,17 +64,20 @@ Prank: If a player lands on a space occupied by another player, then they send t
 
     def set_player_space(self) ->None:
         """Sets the space of player 1 in place"""
-        spaces = [4, 8, 13, 18, 23, 27]
+        spaces = [5, 9, 14, 19, 24, 28]
         if self.get_current_player() == self.player1:
             if self.get_player1_space() == None:
                 previous_value = 0
             else:
                 previous_value = self.get_player1_space()
+            self.player1_space_previous = previous_value
             new_space = previous_value + sum(self.dice)
             if new_space <= 63:
                 self.player1_space = new_space
             if new_space == 9:
                 self.player1_space = 16
+            if new_space == self.player2_space:
+                self.player2_space = self.player2_space_previous
             if new_space in spaces:
                 self.round_number -= 1
 
@@ -83,11 +86,14 @@ Prank: If a player lands on a space occupied by another player, then they send t
                 previous_value = 0
             else:
                 previous_value = self.get_player2_space()
+            self.player2_space_previous = previous_value
             new_space = previous_value + sum(self.dice)
             if new_space <= 63:
                 self.player2_space = new_space
             if new_space == 9:
                 self.player2_space = 16
+            if new_space == self.player1_space:
+                self.player1_space = self.player1_space_previous
             if new_space in spaces:
                 self.round_number -= 1
 
